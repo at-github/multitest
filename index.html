@@ -61,22 +61,23 @@
               input.addEventListener('change', (event) => {
                 const element = event.target
 
-                let lat = element.dataset.lat
-                if (lat === undefined || lat === '')
-                  throw new Error('Missing lat')
+                try {
+                  let lat = element.dataset.lat
+                  if (lat === undefined || lat === '')
+                    throw new Error('Missing lat')
 
-                const lng = element.dataset.lng
-                if (lng === undefined || lng === '')
-                  throw new Error('Missing lng')
+                  const lng = element.dataset.lng
+                  if (lng === undefined || lng === '')
+                    throw new Error('Missing lng')
 
-                const title   = element.dataset.title
-                if (!title)
-                  throw new Error('Missing title')
+                  const title   = element.dataset.title
+                  if (!title)
+                    throw new Error('Missing title')
 
-                L.popup()
-                  .setLatLng([lat, lng])
-                  .setContent(title)
-                  .openOn(map);
+                } catch(error) {
+                  console.error(error)
+                  alert('Désolé un problème technique est survenu')
+                }
               })
             })
           }
