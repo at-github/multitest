@@ -49,8 +49,34 @@
         </section>
       </div>
       <script>
-        const map = L.map('map').setView([48.8781322 , 2.3238234], 13);
         const popups = {}
+        const map = L.map('map').setView([48.8781322 , 2.3238234], 13);
+
+        const checkAttributes = element => {
+          if (
+            element?.dataset?.lat === undefined
+            || element?.dataset?.lat === ''
+          )
+            throw new Error('Missing lat')
+
+          if (
+            element?.dataset?.lng === undefined
+            || element?.dataset?.lng === ''
+          )
+            throw new Error('Missing lng')
+
+          if (
+            element?.dataset?.title === undefined
+            || element?.dataset?.title === ''
+          )
+            throw new Error('Missing title')
+
+          if (
+            element.id === undefined
+            || element.id === ''
+          )
+            throw new Error('Missing id')
+        }
 
         L.tileLayer(
           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -64,9 +90,17 @@
           if (document.readyState === 'complete') {
             const poisInputs = document.querySelectorAll('nav input')
             poisInputs.forEach(input => {
+              try {
+                checkAttributes(input)
+              } catch(error) {
+                console.error(error)
+                alert('Désolé un problème technique est survenu')
+              }
 
               input.addEventListener('change', (event) => {
 
+                // Uncheck other input, so only one will be checked
+                // I should use radio input
                 poisInputs.forEach(poiElement => {
                   if (poiElement !== input)
                     poiElement.checked = false
@@ -74,35 +108,19 @@
 
                 const element = event.target
 
-                try {
-                  let lat = element.dataset.lat
-                  if (lat === undefined || lat === '')
-                    throw new Error('Missing lat')
+                const lat = element.dataset.lat
+                const lng = element.dataset.lng
+                const title = element.dataset.title
+                const id = element.id
 
-                  const lng = element.dataset.lng
-                  if (lng === undefined || lng === '')
-                    throw new Error('Missing lng')
-
-                  const title = element.dataset.title
-                  if (!title)
-                    throw new Error('Missing title')
-
-                  const id = element.id
-                  if (!id)
-                    throw new Error('Missing id')
-
-                  if (element.checked === true) {
-                    popups[element.id] = L.popup()
-                      .setLatLng([lat, lng])
-                      .setContent(title)
-                      .openOn(map);
-                  } else {
-                    if (popups[element.id])
-                      popups[element.id].close()
-                  }
-                } catch(error) {
-                  console.error(error)
-                  alert('Désolé un problème technique est survenu')
+                if (element.checked === true) {
+                  popups[element.id] = L.popup()
+                    .setLatLng([lat, lng])
+                    .setContent(title)
+                    .openOn(map);
+                } else {
+                  if (popups[element.id])
+                    popups[element.id].close()
                 }
               })
             })
