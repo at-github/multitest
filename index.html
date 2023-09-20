@@ -35,11 +35,11 @@
         <nav>
           <ul>
             <li>
-              <input type="checkbox" id="porte-champerret" data-lat="48.885651" data-lng="2.291234" data-title="Porte de Champerret" />
+              <input type="radio" name="poi" id="porte-champerret" data-lat="48.885651" data-lng="2.291234" data-title="Porte de Champerret" />
               <label for="porte-champerret">Porte de Champerret</label>
             </li>
             <li>
-              <input type="checkbox" id="notre-dame" data-lat="48.852846" data-lng="2.350412" data-title="Notre dame" />
+              <input type="radio" name="poi" id="notre-dame" data-lat="48.852846" data-lng="2.350412" data-title="Notre dame" />
               <label for="notre-dame">Notre dame</label>
             </li>
           </ul>
@@ -106,13 +106,6 @@
               }
 
               input.addEventListener('change', (event) => {
-
-                // Uncheck other input, so only one will be checked
-                // I should use radio input
-                poisInputs.forEach(poiElement => {
-                  if (poiElement !== input)
-                    poiElement.checked = false
-                })
 
                 const element = event.target
 
