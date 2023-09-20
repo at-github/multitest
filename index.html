@@ -50,6 +50,11 @@
             attribution: 'Made for multi technical test | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           }
         ).addTo(map);
+
+        const popup = L.popup()
+          .setLatLng([48.885651, 2.291234])
+          .setContent("Porte de champerret")
+          .openOn(map);
       </script>
   </body>
 </html>
