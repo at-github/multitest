@@ -12,6 +12,10 @@
       padding: 0;
     }
 
+    label, input {
+      cursor: pointer;
+    }
+
     #container {
       display: flex;
       flex-direction: row;
@@ -58,8 +62,16 @@
 
         document.onreadystatechange = () => {
           if (document.readyState === 'complete') {
-            document.querySelectorAll('nav input').forEach(input => {
+            const poisInputs = document.querySelectorAll('nav input')
+            poisInputs.forEach(input => {
+
               input.addEventListener('change', (event) => {
+
+                poisInputs.forEach(poiElement => {
+                  if (poiElement !== input)
+                    poiElement.checked = false
+                })
+
                 const element = event.target
 
                 try {
