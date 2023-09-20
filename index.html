@@ -89,6 +89,14 @@
         document.onreadystatechange = () => {
           if (document.readyState === 'complete') {
             const poisInputs = document.querySelectorAll('nav input')
+
+            // Uncheck on click the map, prevent closed popup & checked input
+            map.on('click', (e) => {
+              poisInputs.forEach(input => {
+                input.checked = false
+              })
+            })
+
             poisInputs.forEach(input => {
               try {
                 checkAttributes(input)
