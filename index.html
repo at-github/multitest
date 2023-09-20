@@ -50,7 +50,9 @@
       </div>
       <script>
         const popups = {}
-        const map = L.map('map').setView([48.8781322 , 2.3238234], 13);
+        // Initialize map between Porte de Champerret & Notre dame
+        const map = L.map('map')
+          .setView([48.8781322 , 2.3238234], 13);
 
         const checkAttributes = element => {
           if (
@@ -87,45 +89,44 @@
         ).addTo(map);
 
         document.onreadystatechange = () => {
-          if (document.readyState === 'complete') {
-            const poisInputs = document.querySelectorAll('nav input')
+          if (document.readyState !== 'complete') 
+            return
 
-            // Uncheck on click the map, prevent closed popup & checked input
-            map.on('click', (e) => {
-              poisInputs.forEach(input => {
-                input.checked = false
-              })
-            })
+          const poisInputs = document.querySelectorAll('nav input')
 
+          // Uncheck on click the map, prevent closed popup & checked input
+          map.on('click', (e) => {
             poisInputs.forEach(input => {
-              try {
-                checkAttributes(input)
-              } catch(error) {
-                console.error(error)
-                alert('Désolé un problème technique est survenu')
-              }
-
-              input.addEventListener('change', (event) => {
-
-                const element = event.target
-
-                const lat = element.dataset.lat
-                const lng = element.dataset.lng
-                const title = element.dataset.title
-                const id = element.id
-
-                if (element.checked === true) {
-                  popups[element.id] = L.popup()
-                    .setLatLng([lat, lng])
-                    .setContent(title)
-                    .openOn(map);
-                } else {
-                  if (popups[element.id])
-                    popups[element.id].close()
-                }
-              })
+              input.checked = false
             })
-          }
+          })
+
+          poisInputs.forEach(input => {
+            // Check mandatory attributes sooner
+            try {
+              checkAttributes(input)
+            } catch(error) {
+              console.error(error)
+              alert('Désolé un problème technique est survenu')
+            }
+
+            input.addEventListener('change', (event) => {
+
+              const element = event.target
+              const { lat, lng, title } = element.dataset
+              const id = element.id
+
+              if (element.checked === true) {
+                popups[element.id] = L.popup()
+                  .setLatLng([lat, lng])
+                  .setContent(title)
+                  .openOn(map);
+              } else {
+                if (popups[element.id])
+                  popups[element.id].close()
+              }
+            })
+          })
         }
       </script>
   </body>
