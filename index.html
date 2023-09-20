@@ -31,8 +31,12 @@
         <nav>
           <ul>
             <li>
-              <input type="checkbox" id="porte-champerret" data-lat="48.885651" data-ln="2.291234" />
+              <input type="checkbox" id="porte-champerret" data-lat="48.885651" data-lng="2.291234" data-title="Porte de Champerret" />
               <label for="porte-champerret">Porte de Champerret</label>
+            </li>
+            <li>
+              <input type="checkbox" id="notre-dame" data-lat="48.852846" data-lng="2.350412" data-title="Notre dame" />
+              <label for="notre-dame">Notre dame</label>
             </li>
           </ul>
         </nav>
@@ -51,10 +55,32 @@
           }
         ).addTo(map);
 
-        const popup = L.popup()
-          .setLatLng([48.885651, 2.291234])
-          .setContent("Porte de champerret")
-          .openOn(map);
+        document.onreadystatechange = () => {
+          if (document.readyState === 'complete') {
+            document.querySelectorAll('nav input').forEach(input => {
+              input.addEventListener('change', (event) => {
+                const element = event.target
+
+                let lat = element.dataset.lat
+                if (lat === undefined || lat === '')
+                  throw new Error('Missing lat')
+
+                const lng = element.dataset.lng
+                if (lng === undefined || lng === '')
+                  throw new Error('Missing lng')
+
+                const title   = element.dataset.title
+                if (!title)
+                  throw new Error('Missing title')
+
+                L.popup()
+                  .setLatLng([lat, lng])
+                  .setContent(title)
+                  .openOn(map);
+              })
+            })
+          }
+        }
       </script>
   </body>
 </html>
