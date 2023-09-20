@@ -24,6 +24,7 @@ J'interprète cette question sous un angle technique.
 Tout dépends de la direction du projet,
 sans plus de spécificités :
 
+- Prévoir une couche d'abstraction / d'adaptation à leaflet ou une autre bibliothèque
 - Je ferai en sorte que la liste des villes interactives soit générée dynamiquement
 - Éclater les fichiers css, js & html
 - Un affichage *responsive*
