@@ -46,6 +46,7 @@
       </div>
       <script>
         const map = L.map('map').setView([48.8781322 , 2.3238234], 13);
+        const popups = {}
 
         L.tileLayer(
           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -70,10 +71,23 @@
                   if (lng === undefined || lng === '')
                     throw new Error('Missing lng')
 
-                  const title   = element.dataset.title
+                  const title = element.dataset.title
                   if (!title)
                     throw new Error('Missing title')
 
+                  const id = element.id
+                  if (!id)
+                    throw new Error('Missing id')
+
+                  if (element.checked === true) {
+                    popups[element.id] = L.popup()
+                      .setLatLng([lat, lng])
+                      .setContent(title)
+                      .openOn(map);
+                  } else {
+                    if (popups[element.id])
+                      popups[element.id].close()
+                  }
                 } catch(error) {
                   console.error(error)
                   alert('Désolé un problème technique est survenu')
